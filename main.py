@@ -84,7 +84,7 @@ def get_existing_csv_files(directory: str = DATA_FOLDER) -> List[str]:
     """Auto-detects and lists all existing .csv files."""
     return [f for f in os.listdir(directory) if f.endswith(".csv")]
 
-# --- Helper for Conditional Score Styling ---
+# score styling for conditional colors
 def _get_score_style(score: Optional[float]) -> str:
     """Returns a rich style string based on the score value."""
     if score is None:
@@ -100,7 +100,7 @@ def _get_score_style(score: Optional[float]) -> str:
 def fmt(v: Optional[float]) -> str:
     """Formats a float safely."""
     return "N/A" if v is None else f"{v:.2f}"
-# --- End Score Styling Helper ---
+
 
 
 def display_students_table(
@@ -174,8 +174,7 @@ def display_students_table(
     
     CONSOLE.print(table)
 
-
-# --- Input & Utility Functions for New Data ---
+#input
 
 def _get_next_student_id(students: List[Dict[str, Any]], section: str) -> str:
     """Generates the next student ID based on section (e.g., 'BSIT01')."""
@@ -315,7 +314,7 @@ def _prompt_new_student(existing_students: List[Dict[str, Any]], pre_defined_sec
         CONSOLE.print(f"[red]Critical Validation Error: {e}. Record will not be saved.[/red]")
         return None
 
-# --- New Helper Function for saving the entire CSV (Needed for Menu 1) ---
+# New Helper Function for saving the entire CSV (Needed for Menu 1) 
 
 def export_entire_csv(records: List[Dict[str, Any]], path: str) -> str:
     """
@@ -327,10 +326,10 @@ def export_entire_csv(records: List[Dict[str, Any]], path: str) -> str:
     # We rely on DEFAULT_FIELDS from reports.py
     from reports import DEFAULT_FIELDS 
 
-    # ANIMATION: Track progress bar for saving (Slower/Thicker)
+    
     for step in track(range(35), description=f"[green]Writing data to {os.path.basename(path)}...[/green]", transient=True):
         if step == 0:
-            # The actual write operation only happens once
+            
             with open(path, "w", newline="", encoding="utf-8") as f:
                 writer = csv.DictWriter(f, fieldnames=DEFAULT_FIELDS, extrasaction="ignore")
                 writer.writeheader()
@@ -338,12 +337,12 @@ def export_entire_csv(records: List[Dict[str, Any]], path: str) -> str:
                     # Ensure None values are written as empty strings
                     row = {k: ("" if r.get(k) is None else r.get(k)) for k in DEFAULT_FIELDS}
                     writer.writerow(row)
-        time.sleep(0.02) # Slower sleep
+        time.sleep(0.02) 
 
     return path
 
 
-# --- Menu Handlers (Core Functional Features) ---
+# For the main core functs like entering new data, loading files & etc.
 
 def handle_enter_new_data(config: Dict[str, Any], all_students: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     """Menu 1: New Flow - Prompt for CSV name, then prompt for student data (in a loop), and save."""
@@ -366,7 +365,7 @@ def handle_enter_new_data(config: Dict[str, Any], all_students: List[Dict[str, A
     
     CONSOLE.print(f"[green]Loaded {len(students_in_file)} existing records from {csv_name}.[/green]")
     
-    # --- 3. Student Entry Loop ---
+    #3. Student Entry Loop
     current_section: Optional[str] = None
     students_added_count = 0
     
@@ -400,7 +399,7 @@ def handle_enter_new_data(config: Dict[str, Any], all_students: List[Dict[str, A
             # Important: Set the default section for the next loop iteration
             current_section = new_student['section'] 
     
-    # --- 5. Save and Display ---
+    # 5. Save and Display 
     if students_added_count > 0:
         # Re-run grade computation on the updated list for this file
         recompute_grades_for_students(students_in_file, config)
@@ -459,7 +458,7 @@ def handle_load_existing_csv(config: Dict[str, Any]) -> None:
         
     CONSOLE.print("\n[bold cyan]--- Section Details ---[/bold cyan]")
     
-    # Iterate and display separate tables and summaries for each section
+    # sep tables per sect and summaries too
     grade_thr = config.get("passing_grade_threshold", 70)
     att_thr = config.get("at_risk_attendance_threshold", 80)
 
@@ -554,7 +553,7 @@ def handle_edit_existing_csv(config: Dict[str, Any], all_students: List[Dict[str
             CONSOLE.print("[red]Invalid selection.[/red]")
             continue
 
-        # --- Edit/Delete Sub-Menu ---
+        #Edit/Delete Sub-Menu
         
         edit_options = Prompt.ask(f"[cyan]Editing {student_to_edit['last_name']}, {student_to_edit['first_name']}. [G]rade, [S]ection/Name, [D]elete, [C]ancel?[/cyan]", 
                                   choices=['G', 'S', 'D', 'C']).upper()
@@ -633,16 +632,14 @@ def handle_edit_existing_csv(config: Dict[str, Any], all_students: List[Dict[str
                                config.get("passing_grade_threshold", 70), 
                                config.get("at_risk_attendance_threshold", 80))
                                
-    # --- Save Logic (runs after 'S' is selected) ---
+    # Save Logic (runs after 'S' is selected)
     
     # Save the entire file's contents (which includes all sections)
     export_entire_csv(students_in_file, filepath)
     
     CONSOLE.print(f"\n[green]Success! File '{os.path.basename(filepath)}' saved.[/green]")
     
-    # Update all_students list with the final state of the edited students
-    # The direct object references ensure that changes are reflected in all_students, 
-    # but we recompute grades for all just to be safe.
+ #updates and recompute for safety
     recompute_grades_for_students(all_students, config)
     
     return all_students
@@ -688,8 +685,7 @@ def handle_generate_reports(config: Dict[str, Any]) -> None:
     if not files:
         CONSOLE.print("[yellow]No CSV files found to generate reports from.[/yellow]")
         return
-        
-    # NOTE: The redundant 'from transform import...' line has been removed here.
+
     
     CONSOLE.print(Panel("[gold1]5. Generate All Reports[/gold1]", border_style="gold1"))
     CONSOLE.print("[bold]Select a CSV file to generate reports for (Summary, Section CSVs, At-Risk List):[/bold]")
@@ -723,25 +719,24 @@ def handle_generate_reports(config: Dict[str, Any]) -> None:
             "attendance_threshold": config.get("at_risk_attendance_threshold", 80.0)
         }
         
-        # ANIMATION: Status Spinner for report generation (Slower)
         with CONSOLE.status("[magenta]Running complex report generation and analytics...[/magenta]", spinner="star"):
-            time.sleep(0.4) # Slow down significantly
+            time.sleep(0.4) 
             summary_data = generate_reports(report_students, report_config)
             
-            # --- NEW HISTOGRAM GENERATION ---
+            # For generaiting histogram
             plot_path = generate_grade_histogram(
                 report_students,
                 report_config["output_folder"],
                 os.path.basename(filepath)
             )
-            # -------------------------------
+          
             
         CONSOLE.print(f"[green]Reports generated successfully in {report_config['output_folder']}.[/green]")
 
-        # --- Report the plot path ---
+        # Report the plot path 
         if plot_path:
             CONSOLE.print(f"\n[green]Histogram saved to:[/green] [cyan]{plot_path}[/cyan]")
-        # -----------------------------
+        
 
         # Analytics/Summary Display
         sections_stats = summary_data['sections']
@@ -796,7 +791,7 @@ def handle_apply_curve(config: Dict[str, Any], all_students: List[Dict[str, Any]
 
     CONSOLE.print(f"[cyan]Applying curve to set mean of {os.path.basename(filepath)} to {target_mean:.2f}...[/cyan]")
 
-    # ANIMATION: Status Spinner for curving
+  
     with CONSOLE.status("[magenta]Applying curve and recalculating grades...[/magenta]", spinner="dots"):
         # 3. Apply the Curve
         students_in_file = apply_grade_curve(students_in_file, target_mean)
@@ -806,7 +801,7 @@ def handle_apply_curve(config: Dict[str, Any], all_students: List[Dict[str, Any]
         time.sleep(0.3) # Give time for the spinner to show completion
 
     
-    # 5. --- NEW SAVE AS LOGIC ---
+    # 5. For saaving new Curved files
     CONSOLE.print("\n[bold yellow]--- Saving Curved Grades to NEW File ---[/bold yellow]")
     while True:
         # Generate the default suggested name: [OriginalName]_CURVED.csv
@@ -844,7 +839,7 @@ def handle_apply_curve(config: Dict[str, Any], all_students: List[Dict[str, Any]
     
     return all_students
         
-# --- Main Application Loop ---
+#main menu loop
 
 def main_menu() -> None:
     """Displays the main menu and handles user choices."""
@@ -857,17 +852,17 @@ def main_menu() -> None:
     # Placeholder for the central list of all student data loaded/added
     all_students: List[Dict[str, Any]] = []
     
-    # --- STARTUP ANIMATION (Track Progress Bar) ---
+   
     for _ in track(range(100), description="[gold1]Opening EPSILON GRADING SYSTEM...[/gold1]", transient=True):
-        time.sleep(0.02) # Slower delay for a visible bar
-    # --- END STARTUP ANIMATION ---
+        time.sleep(0.02) 
+  
 
 
     # !MAIN LOOP!
     while True:
         CONSOLE.clear()
         
-        #
+        
         CONSOLE.print(Panel(
             Align.center("[bold cyan1 underline]🎓EPSILON GRADING SYSTEM🏫[/bold cyan1 underline]"), 
             border_style="gold1"

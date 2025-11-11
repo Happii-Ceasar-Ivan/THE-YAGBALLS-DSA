@@ -108,14 +108,14 @@ def display_students_table(
     title: str, 
     grade_thr: float, 
     att_thr: float,
-    sort_key: str = 'last_name' # For Sorting
+    sort_key: str = 'last_name' # for da sort
 ) -> None:
     """Displays students in a formatted Rich Table with conditional score styling."""
     if not students:
         CONSOLE.print(f"[yellow]No student records to display for {title}.[/yellow]")
         return
 
-    # Sort students (Sorting requirement)
+    # Sort studen
     sorted_students = sorted(
         students, 
         key=lambda s: (s.get('last_name', ''), s.get('first_name', ''))
@@ -129,13 +129,13 @@ def display_students_table(
     SCORE_COLS = ["quiz1", "quiz2", "quiz3", "quiz4", "quiz5", "midterm", "final", "attendance_percent"]
     FINAL_COLS = ["Final Grade", "Letter Grade", "Status"]
 
-    # Add columns to the table
+   
     for col in CORE_COLS + SCORE_COLS + FINAL_COLS:
-        # Give numeric columns special justification
+   
         justify = "left" if col in CORE_COLS else "center"
         table.add_column(col.replace('_', ' ').title(), justify=justify, style="white")
 
-    # Add rows with conditional color-coding
+    # just like the score color conditionals earlier
     for student in sorted_students:
         final_grade = student.get("final_grade")
         att_percent = student.get("attendance_percent")
@@ -149,19 +149,19 @@ def display_students_table(
         
         row_items = []
         
-        # 1. Core Data
+        # Core Data
         row_items.append(str(student.get("student_id", "")))
         row_items.append(student.get("last_name", ""))
         row_items.append(student.get("first_name", ""))
         row_items.append(student.get("section", ""))
         
-        # 2. Score Data (Styled conditionally)
+        # Score Data (Styled conditionally)
         for col_key in SCORE_COLS:
             score = student.get(col_key)
             style = _get_score_style(score)
             row_items.append(Text(fmt(score), style=style))
 
-        # 3. Final Grade Data
+        # Final Grade Data
         final_grade_style = _get_score_style(final_grade)
         row_items.append(Text(fmt(final_grade), style=final_grade_style))
         row_items.append(student.get("letter_grade", "N/A"))
@@ -216,7 +216,7 @@ def _prompt_new_student(existing_students: List[Dict[str, Any]], pre_defined_sec
     """Prompts for all new student details with validation."""
     CONSOLE.print(Panel("[gold1]Add New Student Record[/gold1]", border_style="gold1"))
     
-    # 1. Use Pre-defined Section
+    #  Use Pre-defined Section
     if pre_defined_section:
         section = pre_defined_section
         CONSOLE.print(f"[green]Section:[/green] [bold]{section}[/bold]")
@@ -228,11 +228,11 @@ def _prompt_new_student(existing_students: List[Dict[str, Any]], pre_defined_sec
                 break
             CONSOLE.print("[red]Error: Section name cannot be empty.[/red]")
 
-    # 2. Generate ID
+    #  Auto ID hgen
     student_id = _get_next_student_id(existing_students, section)
     CONSOLE.print(f"[green]Generated Student ID:[/green] [bold]{student_id}[/bold]")
 
-    # 3. Prompt for Names
+    # ASk for Names
     while True:
         last_name = Prompt.ask("[cyan]Enter Last Name[/cyan]").strip()
         first_name = Prompt.ask("[cyan]Enter First Name[/cyan]").strip()
@@ -260,7 +260,7 @@ def _prompt_new_student(existing_students: List[Dict[str, Any]], pre_defined_sec
         CONSOLE.print("[red]Error: Last Name and First Name are required.[/red]")
 
 
-    # 4. Prompt for Scores
+    # ask for Scores
     scores = {}
     CONSOLE.print("\n[bold]--- Enter Scores (0-100 or N/A) ---[/bold]")
     for i in range(1, 6):
@@ -269,7 +269,7 @@ def _prompt_new_student(existing_students: List[Dict[str, Any]], pre_defined_sec
     scores["midterm"] = _prompt_score("Midterm Score", allow_none=True)
     scores["final"] = _prompt_score("Final Score", allow_none=True)
     
-    # 5. Prompt for Attendance
+    # Prompt for Attendance
     CONSOLE.print("\n[bold]--- Enter Attendance ---[/bold]")
     while True:
         try:
@@ -349,7 +349,7 @@ def handle_enter_new_data(config: Dict[str, Any], all_students: List[Dict[str, A
     
     CONSOLE.print(Panel("[gold1]1. Create New/Add to Existing Data File[/gold1]", border_style="gold1"))
     
-    # 1. Get CSV file name from user
+    # Get CSV file name from user
     while True:
         csv_name = Prompt.ask("[cyan]Enter the name for the CSV file (e.g., Spring_2025.csv)[/cyan]").strip()
         if not csv_name:
@@ -360,12 +360,12 @@ def handle_enter_new_data(config: Dict[str, Any], all_students: List[Dict[str, A
         filepath = os.path.join(DATA_FOLDER, csv_name)
         break
 
-    # 2. Load existing data from the specified CSV (or start empty)
+    # Load existing data from the specified CSV (or start empty)
     students_in_file, _ = load_section_data(filepath, config) if os.path.exists(filepath) else ([], [])
     
     CONSOLE.print(f"[green]Loaded {len(students_in_file)} existing records from {csv_name}.[/green]")
     
-    #3. Student Entry Loop
+    #Student Entry Loop
     current_section: Optional[str] = None
     students_added_count = 0
     
@@ -387,7 +387,7 @@ def handle_enter_new_data(config: Dict[str, Any], all_students: List[Dict[str, A
         
         CONSOLE.print(f"\n[bold yellow]-- Entering data for Section: {current_section} --[/bold yellow]")
         
-        # 4. Prompt for student details (pass all_students for ID/conflict checks)
+        # Prompt for student details (pass all_students for ID/conflict checks)
         new_student = _prompt_new_student(all_students + students_in_file, pre_defined_section=current_section)
         
         if new_student:
@@ -399,7 +399,7 @@ def handle_enter_new_data(config: Dict[str, Any], all_students: List[Dict[str, A
             # Important: Set the default section for the next loop iteration
             current_section = new_student['section'] 
     
-    # 5. Save and Display 
+    # Save and Display 
     if students_added_count > 0:
         # Re-run grade computation on the updated list for this file
         recompute_grades_for_students(students_in_file, config)
@@ -528,8 +528,8 @@ def handle_edit_existing_csv(config: Dict[str, Any], all_students: List[Dict[str
             return all_students # Return original list
         
         if edit_action == 'S':
-            break # Proceed to save logic
-            
+            break 
+
         if edit_action == 'A':
             # For adding, we need the union of all existing students for ID/Name conflict checks
             new_student = _prompt_new_student(all_students + students_in_file)
@@ -700,7 +700,7 @@ def handle_generate_reports(config: Dict[str, Any]) -> None:
         except Exception:
             CONSOLE.print("[red]Invalid choice. Please select a number from the list.[/red]")
 
-    # 1. Load data from the selected CSV only 
+    # Load data from the selected CSV only 
     report_students, _ = load_section_data(filepath, config)
     
     if not report_students:
@@ -709,7 +709,7 @@ def handle_generate_reports(config: Dict[str, Any]) -> None:
         
     CONSOLE.print(f"[green]Successfully loaded {len(report_students)} records from {filepath}. Starting report generation...[/green]")
 
-    # 2. Recompute grades for security
+    # Recompute grades for security
     recompute_grades_for_students(report_students, config)
     
     try:
@@ -772,14 +772,14 @@ def handle_apply_curve(config: Dict[str, Any], all_students: List[Dict[str, Any]
         except Exception:
             CONSOLE.print("[red]Invalid choice. Please select a number from the list.[/red]")
 
-    # 1. Load data from the selected CSV
+    # Load data from the selected CSV
     students_in_file, _ = load_section_data(filepath, config)
     
     if not students_in_file:
         CONSOLE.print(f"[yellow]File '{filepath}' contains no valid records for curving. Aborting.[/yellow]")
         return all_students
         
-    # 2. Get Target Mean
+    # Get Target Mean
     while True:
         try:
             target_mean = FloatPrompt.ask("[cyan]Enter the Target Class Mean (e.g., 85.0 to curve to a B)[/cyan]", default=85.0)
@@ -793,15 +793,15 @@ def handle_apply_curve(config: Dict[str, Any], all_students: List[Dict[str, Any]
 
   
     with CONSOLE.status("[magenta]Applying curve and recalculating grades...[/magenta]", spinner="dots"):
-        # 3. Apply the Curve
+        # Apply the Curve
         students_in_file = apply_grade_curve(students_in_file, target_mean)
 
-        # 4. Recompute Letter Grades (since final_grade changed)
+        # Recompute Letter Grades (since final_grade changed)
         recompute_grades_for_students(students_in_file, config)
         time.sleep(0.3) # Give time for the spinner to show completion
 
     
-    # 5. For saaving new Curved files
+    # For saaving new Curved files
     CONSOLE.print("\n[bold yellow]--- Saving Curved Grades to NEW File ---[/bold yellow]")
     while True:
         # Generate the default suggested name: [OriginalName]_CURVED.csv
@@ -822,12 +822,12 @@ def handle_apply_curve(config: Dict[str, Any], all_students: List[Dict[str, Any]
         
         break
 
-    # 6. Save the updated list to the NEW CSV
+    #  Save the updated list to the NEW CSV
     export_entire_csv(students_in_file, new_filepath)
     
     CONSOLE.print(f"\n[green]Success! Grades curved and saved to NEW file: {new_filepath}[/green]")
     
-    # 7. Display results (all sections in that file)
+    # Display results (all sections in that file)
     sections = group_by_section(students_in_file)
     grade_thr = config.get("passing_grade_threshold", 70)
     att_thr = config.get("at_risk_attendance_threshold", 80)

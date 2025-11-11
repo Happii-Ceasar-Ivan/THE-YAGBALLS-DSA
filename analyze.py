@@ -1,3 +1,5 @@
+import math
+from typing import List, Dict
 def compute_stats(scores: List[float]) -> Dict[str, float]:
     clean_scores = [s for s in scores if s is not None]
     n = len(clean_scores)

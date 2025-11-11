@@ -1,6 +1,7 @@
 # src/transform.py
 # Per, this module handles computing weighted grades and letter grades.
-
+import statistics
+from typing import List, Dict, Any
 from typing import List, Dict, Any, Optional
 
 def compute_final_grades(
@@ -133,35 +134,39 @@ def assign_letter_grades(
         if not assigned:
             student["letter_grade"] = "F"  # Default if below all thresholds
 
+   #added this (caiga) for calayag (function to for grade curves)
+
+   
+
+def apply_grade_curve(students: List[Dict[str, Any]], target_mean: float) -> List[Dict[str, Any]]:
+    """
+    Adjusts final grades so that the class mean matches the target_mean.
+    
+    Args:
+        students: List of student records with 'final_grade'.
+        target_mean: The desired average grade (e.g., 85.0).
+    """
+    # 1. Collect all valid final grades
+    valid_grades = [s["final_grade"] for s in students if s.get("final_grade") is not None]
+    if not valid_grades:
+        return students
+
+    # 2. Calculate the current class mean
+    current_mean = statistics.mean(valid_grades)
+    
+    # 3. Determine the required adjustment factor (shift)
+    shift = target_mean - current_mean
+    
+    # 4. Apply the shift to all grades
+    for student in students:
+        old_grade = student.get("final_grade")
+        if old_grade is not None:
+            new_grade = round(old_grade + shift, 2)
+            # Ensure grades remain within the 0-100 boundary
+            student["final_grade"] = max(0.0, min(100.0, new_grade))
+            
     return students
 
 
 
-    # --- Test compute_final_grades ---
-    print("\n[Test] Computing final grades...")
-    students_with_grades = compute_final_grades(sample_students, sample_weights)
-    
-    # Expected calculations:
-    # s101: (avg(80,85,90,75,88) * 0.4) + (82 * 0.25) + (90 * 0.35)
-    #     = (83.6 * 0.4) + 20.5 + 31.5 = 33.44 + 20.5 + 31.5 = 85.44
-    # s102: (avg(70,65,0,72,50) * 0.4) + (60 * 0.25) + (75 * 0.35)
-    #     = (51.4 * 0.4) + 15.0 + 26.25 = 20.56 + 15.0 + 26.25 = 61.81
-    # s103: (avg(95,92,98,100,90) * 0.4) + (95 * 0.25) + (0 * 0.35)
-    #     = (95.0 * 0.4) + 23.75 + 0.0 = 38.0 + 23.75 = 61.75
-    
-    for s in students_with_grades:
-        print(f"  {s['student_id']}: {s['final_grade']}")
-
-    # --- Test assign_letter_grades ---
-    print("\n[Test] Assigning letter grades...")
-    students_with_letters = assign_letter_grades(students_with_grades, sample_thresholds)
-    
-    # Expected calculations:
-    # s101: 85.44 -> B
-    # s102: 61.81 -> D
-    # s103: 61.75 -> D
-
-    for s in students_with_letters:
-        print(f"  {s['student_id']}: {s['final_grade']} -> {s['letter_grade']}")
-
-    print("\n--- Self-test complete ---")
+   

@@ -74,7 +74,7 @@ def load_section_data(filepath: str, config: Dict[str, Any]) -> Tuple[List[Dict[
             valid_data, skipped_data = ingest_student_data(filepath)
         time.sleep(0.02) # Slower sleep
     
-    # 2. Transform (Grade Computation)
+    # Transform (Grade Computation)
     if valid_data:
         recompute_grades_for_students(valid_data, config)
     
@@ -120,7 +120,6 @@ def display_students_table(
         students, 
         key=lambda s: (s.get('last_name', ''), s.get('first_name', ''))
     )
-
     
     table = Table(title=title, show_lines=True, header_style="bold magenta", style="cyan", width=None)
     

@@ -1,13 +1,7 @@
 import matplotlib.pyplot as plt
 import os
 from typing import List, Dict, Any
-import math # Use math for standard Python list operations if preferred, but not strictly needed here
-
-# Ensure ensure_dir is accessible, possibly by importing it from reports
-# We assume ensure_dir is available globally in the project scope.
-# If not, you must include it here:
-# def ensure_dir(path: str) -> None:
-#     os.makedirs(path, exist_ok=True)
+import math 
 from reports import ensure_dir
 
 def generate_grade_histogram(students: List[Dict[str, Any]], output_folder: str, filename_base: str) -> str:

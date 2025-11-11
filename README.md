@@ -3,10 +3,12 @@ LE PYTHON TYPE SHI
 
 Our GitHub Repo!: https://github.com/Happii-Ceasar-Ivan/THE-YAGBALLS-DSA
 
-Project Overview
+Project Overview:
+
 EPSILON is a command-line interface (CLI) program that is designed to manage data, provide comprehensive grades analysis and report generation for students' grades. The system is built on Python and utilizes the rich library to make it lively, make it look professional, and be an interactive console experience.
 
 "INSTALLATION AND SETUP"
+
 If you wanna try this out
 install these dependencies first by typing these in your python terminal (or in VSCODE termninal)
 1. pip install matplotlib

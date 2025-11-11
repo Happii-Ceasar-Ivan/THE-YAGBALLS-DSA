@@ -158,7 +158,7 @@ def print_summary_report(all_records: List[Student]) -> None:
         CONSOLE.print("\n") # Add space between sections
         
     # Print overall summary
-    CONSOLE.print("[bold underline]=== OVERALL ACADEMIC SUMMARY (ALL SECTIONS) ===[/bold underline]")
+ 
     overall_stats = compute_section_stats(all_records)
     print_section_summary("ALL SECTIONS COMBINED", overall_stats)
 

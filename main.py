@@ -72,7 +72,7 @@ def load_section_data(filepath: str, config: Dict[str, Any]) -> Tuple[List[Dict[
         if step == 0:
             # Actual ingestion happens only once in the background
             valid_data, skipped_data = ingest_student_data(filepath)
-        time.sleep(0.02) # Slower sleep
+        time.sleep(0.02) 
     
     # Transform (Grade Computation)
     if valid_data:
@@ -898,16 +898,16 @@ def main_menu() -> None:
         elif choice == '5':
 
             for _ in track(range(100), description="[green]Loading Choices[/green]", transient=True):
-                time.sleep(0.03) # Small delay for animation
+                time.sleep(0.02) 
             handle_generate_reports(config)
         elif choice == '6':
             for _ in track(range(100), description="[green]Grade Curve Generating[/green]", transient=True):
-                time.sleep(0.03) 
-            all_students = handle_apply_curve(config, all_students) # NEW HANDLER
+                time.sleep(0.02) 
+            all_students = handle_apply_curve(config, all_students) 
         elif choice == '7':
        
             for _ in track(range(100), description="[green]System cleanup and shutting down...[/green]", transient=True):
-                time.sleep(0.02) # Small delay for animation
+                time.sleep(0.02) 
                 
             CONSOLE.print(Panel("[red bold]Exiting EPSILON GRADING SYSTEM. Goodbye! See Ya Again!![/red bold]", border_style="Red"))
             break

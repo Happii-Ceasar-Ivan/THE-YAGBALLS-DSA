@@ -28,8 +28,8 @@ Notes: Please run the code in a full screen terminal
 
 The people behind this code
 
-1. Caiga, Ceasar Ivan A.
-2. Calayag, James Matthew T.
-3. Clarete, Marc Arthur
-4. Magsila, Benjamin Magsila T. III
-5. Noriesta, Don B. 
+1. Caiga, Ceasar Ivan A. - main.py, plot.py & test_core.py
+2. Calayag, James Matthew T. - transform.py
+3. Clarete, Marc Arthur - config.json, DSA_Yagballs.csv & ingsest.py
+4. Magsila, Benjamin Magsila T. III - reports.py
+5. Noriesta, Don B. - analyze.py

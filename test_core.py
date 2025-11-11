@@ -5,23 +5,19 @@ import json
 import numpy as np
 from typing import List, Dict, Any
 
-# --- ENVIRONMENTAL FIX: Ensure current directory is searched first ---
-# This is a common fix for import conflicts in complex project structures or testing.
+
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
-# ----------------------------------------------------------------------
 
-# --- Import Core Project Modules (MUST be after the sys.path modification) ---
+#Import Core Project Modules (MUST be after the sys.path modification)
 try:
     from transform import compute_final_grades, assign_letter_grades, apply_grade_curve
     from analyze import compute_stats, detect_outliers
     from main import _get_next_student_id, load_config
 except ImportError as e:
     print(f"FATAL ERROR: Could not import core modules. Error: {e}")
-    # If the import still fails here, the environment is fundamentally broken.
+   
     raise 
-
-# (The rest of the file remains unchanged from the previous correct version)
 
 
 class TestCoreFunctions(unittest.TestCase):

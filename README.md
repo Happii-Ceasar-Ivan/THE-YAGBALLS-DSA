@@ -1,6 +1,8 @@
 # THE-YAGBALLS-DSA
 LE PYTHON TYPE SHI
 
+Our GitHub Repo!: https://github.com/Happii-Ceasar-Ivan/THE-YAGBALLS-DSA
+
 If you wanna try this out
 install these dependencies first by typing these in your python terminal (or in VSCODE termninal)
 1. pip install matplotlib

@@ -121,7 +121,7 @@ def display_students_table(
         key=lambda s: (s.get('last_name', ''), s.get('first_name', ''))
     )
 
-    # FIX APPLIED HERE: Added width=None to prevent truncation and the TypeError
+    
     table = Table(title=title, show_lines=True, header_style="bold magenta", style="cyan", width=None)
     
     # Define Core and Score Columns

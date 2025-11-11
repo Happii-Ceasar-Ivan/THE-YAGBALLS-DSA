@@ -1,7 +1,5 @@
-# src/transform.py
-# Per, this module handles computing weighted grades and letter grades.
+
 import statistics
-from typing import List, Dict, Any
 from typing import List, Dict, Any, Optional
 
 def compute_final_grades(
@@ -133,6 +131,8 @@ def assign_letter_grades(
 
         if not assigned:
             student["letter_grade"] = "F"  # Default if below all thresholds
+
+    return students
 
    #added this (caiga) for calayag (function to for grade curves)
 

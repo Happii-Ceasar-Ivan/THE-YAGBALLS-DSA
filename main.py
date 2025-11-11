@@ -67,8 +67,8 @@ def load_section_data(filepath: str, config: Dict[str, Any]) -> Tuple[List[Dict[
     valid_data: List[Dict[str, Any]] = []
     skipped_data: List[Dict[str, str]] = []
     
-    # ANIMATION: Track progress bar for loading (Slower/Thicker)
-    for step in track(range(50), description="[cyan]Ingesting data and running validation[/cyan]", transient=True):
+    
+    for step in track(range(100), description="[cyan]Ingesting data and running validation[/cyan]", transient=True):
         if step == 0:
             # Actual ingestion happens only once in the background
             valid_data, skipped_data = ingest_student_data(filepath)
@@ -669,9 +669,9 @@ def handle_delete_csv_file() -> None:
     # Confirmation (Delete CSV files safely requirement)
     if Prompt.ask(f"[red]Are you absolutely sure you want to DELETE '{filepath}' (y/n)?[/red]", default='n') == 'y':
         
-        # ANIMATION: Status Spinner for deletion (Slower)
+       
         with CONSOLE.status(f"[red]Deleting file {filepath}...[/red]", spinner="line"):
-            time.sleep(1) # Slow down significantly
+            time.sleep(0.6) 
             try:
                 os.remove(filepath)
             except OSError as e:
@@ -858,7 +858,7 @@ def main_menu() -> None:
     all_students: List[Dict[str, Any]] = []
     
     # --- STARTUP ANIMATION (Track Progress Bar) ---
-    for _ in track(range(50), description="[gold1]Opening EPSILON GRADING SYSTEM...[/gold1]", transient=True):
+    for _ in track(range(100), description="[gold1]Opening EPSILON GRADING SYSTEM...[/gold1]", transient=True):
         time.sleep(0.02) # Slower delay for a visible bar
     # --- END STARTUP ANIMATION ---
 
@@ -867,7 +867,7 @@ def main_menu() -> None:
     while True:
         CONSOLE.clear()
         
-        # Display Banner (UI requirement)
+        #
         CONSOLE.print(Panel(
             Align.center("[bold cyan1 underline]🎓EPSILON GRADING SYSTEM🏫[/bold cyan1 underline]"), 
             border_style="gold1"
@@ -880,12 +880,12 @@ def main_menu() -> None:
         menu.add_column(style="bold white")
         
         menu.add_row("[gold1 bold][1][/gold1 bold]", "[green bold]Enter New Student File 📝[/green bold]")
-        menu.add_row("[2]", "[green bold]Load Existing CSV 🔃[/green bold]")
-        menu.add_row("[3]", "[green bold]Edit Existing CSV File (Grades, Section, Names, Delete Student) ✏️[/green bold]")
-        menu.add_row("[4]", "[green bold]Delete CSV File 🚮[/green bold]")
-        menu.add_row("[5]", "[green bold]Generate All Reports 📊[/green bold]")
-        menu.add_row("[6]","[green bold]Apply Grade Curve 📈[/green bold]")
-        menu.add_row("[7]", "[green bold]Exit 🚪[/green bold]")
+        menu.add_row("[gold1 bold][2][/gold1 bold]", "[green bold]Load Existing CSV 🔃[/green bold]")
+        menu.add_row("[gold1 bold][3][/gold1 bold]", "[green bold]Edit Existing CSV File (Grades, Section, Names, Delete Student) ✏️[/green bold]")
+        menu.add_row("[gold1 bold][4][/gold1 bold]", "[green bold]Delete CSV File 🚮[/green bold]")
+        menu.add_row("[gold1 bold][5][/gold1 bold]", "[green bold]Generate All Reports 📊[/green bold]")
+        menu.add_row("[gold1 bold][6][/gold1 bold]","[green bold]Apply Grade Curve 📈[/green bold]")
+        menu.add_row("[gold1 bold][7][/gold1 bold]", "[green bold]Exit 🚪[/green bold]")
 
         CONSOLE.print(menu)
         
@@ -903,16 +903,16 @@ def main_menu() -> None:
             handle_delete_csv_file()
         elif choice == '5':
 
-            for _ in track(range(20), description="[green]Loading Choices[/green]", transient=True):
+            for _ in track(range(100), description="[green]Loading Choices[/green]", transient=True):
                 time.sleep(0.03) # Small delay for animation
             handle_generate_reports(config)
         elif choice == '6':
-            for _ in track(range(20), description="[green]Grade Curve Generating[/green]", transient=True):
+            for _ in track(range(100), description="[green]Grade Curve Generating[/green]", transient=True):
                 time.sleep(0.03) 
             all_students = handle_apply_curve(config, all_students) # NEW HANDLER
         elif choice == '7':
-            # ANIMATION: Tracked exit message
-            for _ in track(range(20), description="[green]System cleanup and shutting down...[/green]", transient=True):
+       
+            for _ in track(range(100), description="[green]System cleanup and shutting down...[/green]", transient=True):
                 time.sleep(0.02) # Small delay for animation
                 
             CONSOLE.print(Panel("[red bold]Exiting EPSILON GRADING SYSTEM. Goodbye! See Ya Again!![/red bold]", border_style="Red"))

@@ -1,3 +1,7 @@
+#re entered kasi nagconflict sa merge...buti na copy ko 
+import numpy as np
+from typing import List, Dict
+
 def compute_stats(scores: List[float]) -> Dict[str, float]:
     """
     Computes statistical measures using NumPy for speed.

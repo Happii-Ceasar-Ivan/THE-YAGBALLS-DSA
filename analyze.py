@@ -1,45 +1,76 @@
+import numpy as np
+from typing import List, Dict
+
+# The existing project structure assumes 'math' for clean_scores handling, 
+# but for maximum clarity and speed, we rely solely on numpy and standard python types here.
+# Note: No 'import math' is needed as NumPy provides all mathematical functions.
+
 def compute_stats(scores: List[float]) -> Dict[str, float]:
-    clean_scores = [s for s in scores if s is not None]
+    """
+    Computes statistical measures using NumPy for speed.
+    """
+    # Convert scores to a NumPy array, filtering out None values
+    clean_scores = np.array([s for s in scores if s is not None], dtype=np.float64)
     n = len(clean_scores)
+    
     if n == 0:
         return {"count": 0, "mean": 0, "median": 0, "min": 0, "max": 0, "std_dev": 0}
-    sorted_scores = sorted(clean_scores)
-    mean = sum(sorted_scores) / n
-    median = sorted_scores[n // 2] if n % 2 else (sorted_scores[n // 2 - 1] + sorted_scores[n // 2]) / 2
-    variance = sum((x - mean) ** 2 for x in sorted_scores) / n
-    std_dev = math.sqrt(variance)
+    
+    # Use NumPy's highly optimized functions
+    mean = np.mean(clean_scores)
+    
+    # NumPy's percentile(50) is the median
+    median = np.percentile(clean_scores, 50) 
+    
+    # np.std defaults to the population standard deviation (divisor N), matching the original logic
+    std_dev = np.std(clean_scores)
+    
     return {
         "count": n,
-        "mean": mean,
-        "median": median,
-        "min": min(sorted_scores),
-        "max": max(sorted_scores),
-        "std_dev": std_dev
+        "mean": float(mean),
+        "median": float(median),
+        "min": float(np.min(clean_scores)),
+        "max": float(np.max(clean_scores)),
+        "std_dev": float(std_dev)
     }
 
 def compute_percentile(scores: List[float], percentile: float) -> float:
-    clean_scores = sorted([s for s in scores if s is not None])
+    """
+    Computes a percentile using NumPy's interpolation method.
+    """
+    clean_scores = [s for s in scores if s is not None]
     if not clean_scores:
         return 0
-    k = (len(clean_scores) - 1) * (percentile / 100)
-    f = math.floor(k)
-    c = math.ceil(k)
-    if f == c:
-        return clean_scores[int(k)]
-    return clean_scores[f] + (clean_scores[c] - clean_scores[f]) * (k - f)
+        
+    # Use NumPy's built-in percentile function
+    return float(np.percentile(clean_scores, percentile))
 
 def detect_outliers(scores: List[float]) -> List[float]:
-    if len(scores) < 4:
+    """
+    Detects outliers based on the 1.5 * IQR rule, utilizing NumPy for quartile calculation.
+    """
+    clean_scores = [s for s in scores if s is not None]
+    if len(clean_scores) < 4:
         return []
-    q1 = compute_percentile(scores, 25)
-    q3 = compute_percentile(scores, 75)
+    
+    scores_array = np.array(clean_scores, dtype=np.float64)
+    
+    # Calculate quartiles using NumPy
+    q1 = np.percentile(scores_array, 25)
+    q3 = np.percentile(scores_array, 75)
+    
     iqr = q3 - q1
     lower = q1 - 1.5 * iqr
     upper = q3 + 1.5 * iqr
-    return [s for s in scores if s < lower or s > upper]
+    
+    return [s for s in clean_scores if s < lower or s > upper]
 
 def analyze_section(students: List[Dict], section: str) -> Dict:
-    scores = [s["final_score"] for s in students if s["section"] == section]
+    """
+    Analyzes a specific section, maintaining compatibility with the rest of the system.
+    """
+    # The final_score data types are typically floats, suitable for NumPy
+    scores = [s.get("final_score") for s in students if s.get("section") == section]
     stats = compute_stats(scores)
     outliers = detect_outliers(scores)
     return {**stats, "section": section, "outliers": outliers}

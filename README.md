@@ -3,6 +3,10 @@ LE PYTHON TYPE SHI
 
 Our GitHub Repo!: https://github.com/Happii-Ceasar-Ivan/THE-YAGBALLS-DSA
 
+Project Overview
+EPSILON is a command-line interface (CLI) program that is designed to manage data, provide comprehensive grades analysis and report generation for students' grades. The system is built on Python and utilizes the rich library to make it lively, make it look professional, and be an interactive console experience.
+
+"INSTALLATION AND SETUP"
 If you wanna try this out
 install these dependencies first by typing these in your python terminal (or in VSCODE termninal)
 1. pip install matplotlib
@@ -20,13 +24,26 @@ File Functions
 7. plot.py - for histogram 
 8. test_core.py - for testing code integrity
 
-How to use:
+HOW TO RUN (Assumming you have alread installed the dependencies):
 
-1. Pick what ya wanna do from the choices.
-2. Follow as intructed.
-3. Done
+1. Run main.py (If you have code runner in VS code:Ctrl + alt + N)
+2. Pick what ya wanna do from the choices.
+3. Follow as intructed.
+4. Type in terminal "pytest test_core.py" to run tests.
+5. Done
 
-Notes: Please run the code in a full screen terminal
+Note: Please run the code in a full screen terminal
+
+Configuration Notes (config.json)The config.json file is essential as it dictates the entire grading logic:
+1. grading_weights: Defines the percentage scheme used by transform.py to calculate the final score (e.g., Quizzes: 40%, Final: 35%).
+2. grade_thresholds: Provides the numerical cutoffs for transform.py to assign letter grades (e.g., 93.0 = A)
+3. output_folder: Specifies the directory where all report outputs (CSVs, At-Risk lists, and Histograms) are saved.
+
+Complexity Discussions:
+- Data Structure: The student data is managed by using various Python lists and libraries that are much needed for handling datas like names, scores and, etc.
+- We used numpy in analyze.py for all stat computations for performance gains.
+- Modularity: We modularized everything so we can share work to each other for each file as well as to prevent overtly long lines of codes. It also gives us an easier debugging experience as each function is in their own file.
+- We used rich.py to improve the lame dull terminal so it will look livelier by using colors, as well as adding the loading animations to make it feel like an app. It improves readability (compared to just white texts) as well as improve the user experience. 
 
 The people behind this code
 
@@ -35,3 +52,5 @@ The people behind this code
 3. Clarete, Marc Arthur - config.json, DSA_Yagballs.csv & ingsest.py
 4. Magsila, Benjamin Magsila T. III - reports.py
 5. Noriesta, Don B. - analyze.py
+
+Matsaloves sa inyong lahat sah!

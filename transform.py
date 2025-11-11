@@ -135,45 +135,7 @@ def assign_letter_grades(
 
     return students
 
-# This block allows the file to be run directly for testing
-if __name__ == "__main__":
-    print("--- Running transform.py self-test ---")
 
-    # 1. Define sample data based on project spec.
-    sample_students: List[Dict[str, Any]] = [
-        {
-            "student_id": "s101",
-            "quiz1": 80, "quiz2": 85, "quiz3": 90, "quiz4": 75, "quiz5": 88,
-            "midterm": 82,
-            "final": 90
-        },
-        {
-            "student_id": "s102",
-            "quiz1": 70, "quiz2": 65, "quiz3": None, "quiz4": 72, "quiz5": 50,
-            "midterm": 60,
-            "final": 75
-        },
-        {
-            "student_id": "s103",
-            "quiz1": 95, "quiz2": 92, "quiz3": 98, "quiz4": 100, "quiz5": 90,
-            "midterm": 95,
-            "final": None  # Missing final
-        }
-    ]
-
-    # 2. Define sample config data.
-    sample_weights: Dict[str, float] = {
-        "quizzes": 0.40,  # 40%
-        "midterm": 0.25,  # 25%
-        "final": 0.35     # 35%
-    }
-    
-    sample_thresholds: Dict[str, float] = {
-        "A": 90,
-        "B": 80,
-        "C": 70,
-        "D": 60
-    }
 
     # --- Test compute_final_grades ---
     print("\n[Test] Computing final grades...")

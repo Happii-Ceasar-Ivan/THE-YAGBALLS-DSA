@@ -22,12 +22,12 @@ from transform import compute_final_grades, assign_letter_grades
 from reports import print_summary_report, group_by_section, export_section_csv, DEFAULT_FIELDS, generate_reports, ensure_dir 
 from analyze import compute_stats, detect_outliers, analyze_section # For Analytics Support
 
-# --- Global Constants and Rich Setup ---
+# for glo consts and rich 
 CONSOLE = Console()
 CONFIG_FILE = "config.json"
 DATA_FOLDER = "." # Search in the current directory
 
-# --- Core Logic Functions ---
+#  Core Logic Functions
 
 def load_config() -> Dict[str, Any]:
     """Loads grading weights and thresholds from config.json."""
@@ -50,9 +50,9 @@ def recompute_grades_for_students(students: List[Dict[str, Any]], config: Dict[s
     thresholds = config.get("grade_thresholds", {})
     
     if students:
-        # ANIMATION: Status Spinner for processing
+      
         with CONSOLE.status("[magenta]Recomputing final grades and letter assignments...[/magenta]", spinner="dots"):
-            time.sleep(0.3) # Slow down slightly
+            time.sleep(0.3)
             # transform.py functions modify the list in-place
             compute_final_grades(students, weights)
             assign_letter_grades(students, thresholds)

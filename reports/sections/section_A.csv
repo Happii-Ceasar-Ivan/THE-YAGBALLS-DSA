@@ -1,0 +1,7 @@
+student_id,last_name,first_name,section,quiz1,quiz2,quiz3,quiz4,quiz5,midterm,final,attendance_percent,final_grade,letter_grade
+2024001,Smith,John,A,85.0,78.0,92.0,88.0,75.0,82.0,89.0,95.0,85.09,B
+2024003,Williams,Michael,A,70.0,65.0,78.0,72.0,81.0,75.0,79.0,90.0,75.68,C
+2024006,Garcia,Maria,A,88.0,82.0,90.0,85.0,87.0,86.0,90.0,93.0,87.56,B+
+2024009,Rodriguez,Sophia,A,68.0,72.0,65.0,70.0,73.0,71.0,67.0,88.0,69.04,D
+2024012,Lopez,Noah,A,90.0,88.0,91.0,87.0,89.0,89.0,90.0,94.0,89.35,B+
+2024015,Anderson,Mia,A,73.0,76.0,70.0,78.0,75.0,74.0,72.0,91.0,73.46,C

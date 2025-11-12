@@ -52,7 +52,7 @@ def recompute_grades_for_students(students: List[Dict[str, Any]], config: Dict[s
       
         with CONSOLE.status("[magenta]Recomputing final grades and letter assignments...[/magenta]", spinner="dots"):
             time.sleep(0.3)
-            # transform.py functions modify the list in-place
+            # transform.py functions modify the list in-place 
             compute_final_grades(students, weights)
             assign_letter_grades(students, thresholds)
 

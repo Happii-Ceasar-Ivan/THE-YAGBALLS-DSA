@@ -7,6 +7,14 @@
 
 ---
 
+## Presented by the YAGBALLS GROUP! ##
+
+## YEAH! AMAZING! GREAT!!!! ##
+
+## And we always ballin! YOLO! ##
+
+---
+
 # Project Overview: #
 
 EPSILON is a command-line interface (CLI) program that is designed to manage data, provide comprehensive grades analysis and report generation for students' grades. The system is built on Python and utilizes the rich library to make it lively, make it look professional, and be an interactive console experience.

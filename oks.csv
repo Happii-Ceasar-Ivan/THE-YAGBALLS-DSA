@@ -1,3 +1,3 @@
 student_id,last_name,first_name,section,quiz1,quiz2,quiz3,quiz4,quiz5,midterm,final,attendance_percent,final_grade,letter_grade
 BSIT01,Caiga,1asda,bsit,100.0,100.0,10.0,100.0,100.0,,,100.0,32.8,F
-BSIT02,Ckia,asd,bsit,100.0,100.0,100.0,100.0,100.0,100.0,100.0,25.0,100.0,A
+BSIT02,Ckia,asd,bsit,100.0,100.0,,100.0,100.0,100.0,100.0,100.0,92.0,A-

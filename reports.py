@@ -26,10 +26,14 @@ import os
 import math
 import statistics
 from typing import List, Dict, Any, Optional
+#inserted for designs
+from rich.console import Console
+from rich.panel import Panel
+from rich.align import Align
 
 Student = Dict[str, Any]
 SectionStats = Dict[str, Any]
-
+CONSOLE = Console()
 
 # ---------- Utilities ----------
 def safe_mean(values: List[float]) -> Optional[float]:
@@ -87,34 +91,76 @@ def compute_section_stats(records: List[Student]) -> SectionStats:
     return stats
 
 
-# ---------- Console printing ----------
+# ---------- Console printing ---------- edited na to for rich 
 def print_section_summary(section_name: str, stats: SectionStats) -> None:
-    print("=" * 60)
-    print(f"SECTION: {section_name} — {stats.get('count', 0)} students")
-    print("-" * 60)
-    print(f"Average Final: {fmt(stats['avg_final'])} | Median: {fmt(stats['median_final'])}")
-    print(f"Min: {fmt(stats['min_final'])} | Max: {fmt(stats['max_final'])}")
-    print(f"Percentiles (25th / 50th / 75th): {fmt(stats['p25_final'])} / {fmt(stats['p50_final'])} / {fmt(stats['p75_final'])}")
-    print(f"Avg Attendance: {fmt(stats['avg_attendance'])} (Missing: {stats['attendance_missing']})")
-    print("\nLetter Grade Distribution:")
-    for letter, count in sorted(stats["letter_distribution"].items(), reverse=True):
-        print(f"  {letter:>3}: {count}")
-    print("=" * 60)
+    """Prints a detailed, rich-formatted summary for a single section."""
+    
+    content = []
+    
+    # Header Info
+    content.append(f"[bold cyan]Total Students:[/bold cyan] {stats.get('count', 0)}")
+    
+    # Grade Summary
+    content.append("\n[bold underline magenta]Grade Performance[/bold underline magenta]")
+    content.append(f"Average Final: [green]{fmt(stats['avg_final'])}[/green] | Median: [green]{fmt(stats['median_final'])}[/green]")
+    content.append(f"Min: {fmt(stats['min_final'])} | Max: {fmt(stats['max_final'])}")
+    
+    p25 = fmt(stats['p25_final'])
+    p50 = fmt(stats['p50_final'])
+    p75 = fmt(stats['p75_final'])
+    content.append(f"Percentiles (Q1/Median/Q3): [yellow]{p25}[/yellow] / [green]{p50}[/green] / [yellow]{p75}[/yellow]")
+    
+    # Attendance Summary
+    avg_att = fmt(stats['avg_attendance'])
+    missing_att = stats['attendance_missing']
+    content.append("\n[bold underline magenta]Attendance[/bold underline magenta]")
+    content.append(f"Avg Attendance: {avg_att}% ([red]Missing Data:[/red] {missing_att})")
+    
+    # Letter Grade Distribution
+    dist_lines = ["\n[bold underline magenta]Letter Grade Distribution[/bold underline magenta]"]
+    distribution = sorted(stats["letter_distribution"].items(), key=lambda item: item[0], reverse=True)
+    
+    for letter, count in distribution:
+        dist_lines.append(f"  [bold]{letter:>3}:[/bold] {count}")
 
+    # Combine content and print inside a rich Panel
+    CONSOLE.print(
+        Panel(
+            "\n".join(content + dist_lines),
+            title=f"[gold1]SECTION REPORT: {section_name}[/gold1]",
+            border_style="cyan"
+        )
+    )
 
 def fmt(v: Optional[float]) -> str:
+    """Helper function to format float or return 'N/A'."""
     return "N/A" if v is None else f"{v:.2f}"
 
-
+#edited na din to for rich
 def print_summary_report(all_records: List[Student]) -> None:
-    print("\n=== ACADEMIC ANALYTICS SUMMARY ===\n")
+    """Prints the overall academic analytics summary using rich formatting."""
+    
+    CONSOLE.print(
+        Panel(
+            Align.center("[bold cyan underline]ACADEMIC ANALYTICS SUMMARY REPORT[/bold cyan underline]"),
+            border_style="gold1"
+        )
+    )
+    
     sections = group_by_section(all_records)
+    
+    CONSOLE.print("\n[bold underline]--- Individual Section Summaries ---[/bold underline]\n")
+    
+    # Print summaries for individual sections
     for sec, recs in sorted(sections.items()):
         stats = compute_section_stats(recs)
         print_section_summary(sec, stats)
-    print("\n=== OVERALL SUMMARY ===")
+        CONSOLE.print("\n") # Add space between sections
+        
+    # Print overall summary
+ 
     overall_stats = compute_section_stats(all_records)
-    print_section_summary("ALL SECTIONS", overall_stats)
+    print_section_summary("ALL SECTIONS COMBINED", overall_stats)
 
 
 # ---------- CSV Export ----------

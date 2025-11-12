@@ -1,3 +1,4 @@
+import statistics
 from typing import List, Dict, Any, Optional
 
 def compute_final_grades(
@@ -9,11 +10,9 @@ def compute_final_grades(
         print("Warning: Grade weights are missing. Cannot compute final grades.")
         return students
 
-
     quiz_weight: float = weights.get("quizzes", 0.0)
     midterm_weight: float = weights.get("midterm", 0.0)
     final_weight: float = weights.get("final", 0.0)
-
 
     for student in students:
         try:
@@ -91,4 +90,36 @@ def assign_letter_grades(
         if not assigned:
             student["letter_grade"] = "F" 
 
-    return student
+    return students
+
+
+ # Function for grade curves
+
+def apply_grade_curve(students: List[Dict[str, Any]], target_mean: float) -> List[Dict[str, Any]]:
+    """
+    Adjusts final grades so that the class mean matches the target_mean.
+    
+    Args:
+        students: List of student records with 'final_grade'.
+        target_mean: The desired average grade (e.g., 85.0).
+    """
+    # 1. Collect all valid final grades
+    valid_grades = [s["final_grade"] for s in students if s.get("final_grade") is not None]
+    if not valid_grades:
+        return students
+
+    # 2. Calculate the current class mean
+    current_mean = statistics.mean(valid_grades)
+    
+    # 3. Determine the required adjustment factor (shift)
+    shift = target_mean - current_mean
+    
+    # 4. Apply the shift to all grades
+    for student in students:
+        old_grade = student.get("final_grade")
+        if old_grade is not None:
+            new_grade = round(old_grade + shift, 2)
+            # Ensure grades remain within the 0-100 boundary
+            student["final_grade"] = max(0.0, min(100.0, new_grade))
+            
+    return students

@@ -11,11 +11,13 @@ EPSILON is a command-line interface (CLI) program that is designed to manage dat
 
 If you wanna try this out
 install these dependencies first by typing these in your python terminal (or in VSCODE termninal)
-1. \n```bash\npip install matplotlib\n```\n
-2. python -m pip install rich -i https://pypi.tuna.tsinghua.edu.cn/simple
-3. pip install pytest
-4. pip install numpy
 
+```bash
+pip install matplotlib
+python -m pip install rich -i https://pypi.tuna.tsinghua.edu.cn/simple
+pip install pytest
+pip install numpy
+`` ``` ``
 File Functions
 1. main.py - Core application logic. Contains the menu, rich for style and many more
 2. config.json - Stores grade weights, letter grade thresholds, and report folder paths.

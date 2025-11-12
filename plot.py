@@ -5,17 +5,7 @@ import math
 from reports import ensure_dir
 
 def generate_grade_histogram(students: List[Dict[str, Any]], output_folder: str, filename_base: str) -> str:
-    """
-    Generates and saves a histogram of final grades for the given student data.
-    
-    Args:
-        students: List of student records.
-        output_folder: Directory to save the PNG file.
-        filename_base: Base name for the output PNG file.
-        
-    Returns:
-        The path to the generated PNG file, or an empty string if no data.
-    """
+   
     
     # Collect and filter valid final grades
     grades = [s["final_grade"] for s in students if s.get("final_grade") is not None]

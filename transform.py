@@ -96,13 +96,7 @@ def assign_letter_grades(
  # Function for grade curves
 
 def apply_grade_curve(students: List[Dict[str, Any]], target_mean: float) -> List[Dict[str, Any]]:
-    """
-    Adjusts final grades so that the class mean matches the target_mean.
     
-    Args:
-        students: List of student records with 'final_grade'.
-        target_mean: The desired average grade (e.g., 85.0).
-    """
     # 1. Collect all valid final grades
     valid_grades = [s["final_grade"] for s in students if s.get("final_grade") is not None]
     if not valid_grades:

@@ -9,7 +9,7 @@ from typing import List, Dict, Any
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 
-#Import Core Project Modules (MUST be after the sys.path modification)
+#Import Core Project Modules 
 try:
     from transform import compute_final_grades, assign_letter_grades, apply_grade_curve
     from analyze import compute_stats, detect_outliers
@@ -28,20 +28,20 @@ class TestCoreFunctions(unittest.TestCase):
         Includes a critical check to ensure grade thresholds are loaded.
         """
         
-        # 1. Load Configuration
+        # Load Configuration
         self.config = load_config()
         self.weights = self.config.get("grading_weights", {})
         self.thresholds = self.config.get("grade_thresholds", {})
         
         # CRITICAL CHECK: Fail test setup immediately if essential configuration is missing.
-        # This prevents the NoneType error in test_02.
+        #
         if not self.thresholds:
              raise RuntimeError(
                 "TEST SETUP FAILURE: Grade thresholds failed to load from config.json. "
                 "Ensure config.json is present in the project root and is correctly formatted."
             )
 
-        # 2. Base Sample Data (Base Python list for deep copying)
+        # Base Sample Data (Base Python list for deep copying)
         base_students = [
             {"student_id": "BSIT01", "last_name": "Smith", "first_name": "Alice", "section": "BSIT",
              "quiz1": 80, "quiz2": 85, "quiz3": 90, "quiz4": 75, "quiz5": 88, 
@@ -76,10 +76,10 @@ class TestCoreFunctions(unittest.TestCase):
         Verifies letter grades are assigned according to config thresholds.
         Includes check that the function returns a list (the core fix).
         """
-        # 1. Compute grades first (required input)
+        # Compute grades first (required input)
         students = compute_final_grades(self.sample_students, self.weights)
         
-        # 2. Then assign letters.
+        # Then assign letters.
         students = assign_letter_grades(students, self.thresholds)
         
         # Check that 'students' is indeed a list before subscripting
@@ -104,17 +104,17 @@ class TestCoreFunctions(unittest.TestCase):
         """Tests the grade curve feature to ensure scores shift correctly to hit the target mean."""
         target_mean = 80.0
         
-        # 1. Run core computation
+        # Run core computation
         students = compute_final_grades(self.sample_students, self.weights)
         
         # Calculate initial mean
         current_grades = [s["final_grade"] for s in students]
         initial_mean = sum(current_grades) / len(current_grades)
 
-        # 2. Apply the curve
+        # Apply the curve
         students = apply_grade_curve(students, target_mean)
         
-        # 3. Check the new mean is close to the target
+        # Check the new mean is close to the target
         new_grades = [s["final_grade"] for s in students]
         new_mean = sum(new_grades) / len(new_grades)
         
@@ -127,9 +127,6 @@ class TestCoreFunctions(unittest.TestCase):
         test_scores = [10.0, 20.0, 30.0, 40.0, 50.0, 100.0, None]
         
         stats = compute_stats(test_scores)
-        
-        # Expected values calculated manually for comparison:
-        # Mean: 41.67, Median: 35.0
         
         self.assertEqual(stats["count"], 6)
         self.assertAlmostEqual(stats["mean"], 41.67, 2)

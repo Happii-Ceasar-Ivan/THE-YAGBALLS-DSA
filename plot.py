@@ -17,13 +17,13 @@ def generate_grade_histogram(students: List[Dict[str, Any]], output_folder: str,
         The path to the generated PNG file, or an empty string if no data.
     """
     
-    # 1. Collect and filter valid final grades
+    # Collect and filter valid final grades
     grades = [s["final_grade"] for s in students if s.get("final_grade") is not None]
     
     if not grades:
         return ""
 
-    # 2. Create the figure
+    # Create the figure
     fig, ax = plt.subplots(figsize=(8, 5))
     
     # Define bins: 0 to 100 in 5-point intervals
@@ -38,7 +38,7 @@ def generate_grade_histogram(students: List[Dict[str, Any]], output_folder: str,
     ax.set_xticks(bins)
     ax.set_xlim(0, 100) # Ensure x-axis covers the standard 0-100 range
     
-    # 3. Save the plot
+    # Save the plot
     ensure_dir(output_folder)
     plot_path = os.path.join(output_folder, f"{filename_base.replace('.csv', '_HISTOGRAM.png')}")
     

@@ -6,6 +6,8 @@ def compute_final_grades(
     students: List[Dict[str, Any]], 
     weights: Dict[str, float]
 ) -> List[Dict[str, Any]]:
+    
+#pls remove po ito mr calayag, yung ff docsting from line 11 to line 31
     """
     Computes the final weighted grade for each student.
 

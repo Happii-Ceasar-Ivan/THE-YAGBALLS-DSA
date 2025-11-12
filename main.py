@@ -343,7 +343,7 @@ def export_entire_csv(records: List[Dict[str, Any]], path: str) -> str:
 # For the main core functs like entering new data, loading files & etc.
 
 def handle_enter_new_data(config: Dict[str, Any], all_students: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-    """Menu 1: New Flow - Prompt for CSV name, then prompt for student data (in a loop), and save."""
+   
     
     CONSOLE.print(Panel("[gold1]1. Create New/Add to Existing Data File[/gold1]", border_style="gold1"))
     
@@ -420,7 +420,7 @@ def handle_enter_new_data(config: Dict[str, Any], all_students: List[Dict[str, A
     return all_students
 
 def handle_load_existing_csv(config: Dict[str, Any]) -> None:
-    """Menu 2: Load and view existing CSV files, displaying separated tables and summaries per section."""
+  
     files = get_existing_csv_files()
     if not files:
         CONSOLE.print("[yellow]No CSV files found in the current directory.[/yellow]")
@@ -476,7 +476,7 @@ def handle_load_existing_csv(config: Dict[str, Any]) -> None:
         ))
 
 def handle_edit_existing_csv(config: Dict[str, Any], all_students: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-    """Menu 3: Edit existing CSV file's records."""
+   
     files = get_existing_csv_files()
     if not files:
         CONSOLE.print("[yellow]No CSV files found to edit.[/yellow]")
@@ -643,7 +643,7 @@ def handle_edit_existing_csv(config: Dict[str, Any], all_students: List[Dict[str
     return all_students
 
 def handle_delete_csv_file() -> None:
-    """Menu 4: Delete CSV files safely."""
+   
     files = get_existing_csv_files()
     if not files:
         CONSOLE.print("[yellow]No CSV files found to delete.[/yellow]")
@@ -678,7 +678,7 @@ def handle_delete_csv_file() -> None:
         CONSOLE.print("[yellow]File deletion cancelled.[/yellow]")
         
 def handle_generate_reports(config: Dict[str, Any]) -> None:
-    """Menu 5: Prompts user to select a CSV, loads only that data, and runs report generation."""
+    
     files = get_existing_csv_files()
     if not files:
         CONSOLE.print("[yellow]No CSV files found to generate reports from.[/yellow]")
@@ -752,7 +752,7 @@ def handle_generate_reports(config: Dict[str, Any]) -> None:
         CONSOLE.print(f"[red]An error occurred during report generation: {e}[/red]")
 
 def handle_apply_curve(config: Dict[str, Any], all_students: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-    """Menu 7: Loads a CSV, applies a grade curve based on a target mean, and saves the result to a NEW file."""
+   
     files = get_existing_csv_files()
     if not files:
         CONSOLE.print("[yellow]No CSV files found to apply a grade curve to.[/yellow]")

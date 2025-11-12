@@ -11,7 +11,7 @@ EPSILON is a command-line interface (CLI) program that is designed to manage dat
 
 If you wanna try this out
 install these dependencies first by typing these in your python terminal (or in VSCODE termninal)
-1. ```pip install matplotlib```
+1. \n```pip install matplotlib```\n
 2. python -m pip install rich -i https://pypi.tuna.tsinghua.edu.cn/simple
 3. pip install pytest
 4. pip install numpy

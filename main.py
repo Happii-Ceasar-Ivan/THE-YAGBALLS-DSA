@@ -12,9 +12,8 @@ from rich.table import Table
 from rich.text import Text
 from rich.progress import track
 from rich.align import Align
-from analyze import compute_stats, detect_outliers, analyze_section # For Analytics Support
+from analyze import compute_stats, detect_outliers, analyze_section 
 from plot import generate_grade_histogram
-
 # Import modules from the project structure
 from ingest import ingest_student_data, _parse_and_validate_row
 from transform import compute_final_grades, assign_letter_grades
